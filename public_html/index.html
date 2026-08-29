@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sorting Visualizer | Midlife Programmer</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+
+    <div class="header-inner">
+
+        <a class="logo" href="../../index.html">
+            <span class="logo-mark">&lt;/&gt;</span>
+            <span>Midlife Programmer</span>
+        </a>
+
+        <nav>
+            <a href="../../index.html#projects">Projects</a>
+            <a href="../../index.html#about">About</a>
+            <a href="../../blog.html">Blog</a>
+            <a href="https://github.com/" target="_blank">GitHub</a>
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- ==================================================
+         INTRODUCTION
+         ================================================== -->
+
+    <section class="project-intro">
+
+        <p class="eyebrow">
+            ALGORITHMS • DATA STRUCTURES • VISUALISATION
+        </p>
+
+        <h1>
+            Sorting <span>Visualizer</span>
+        </h1>
+
+        <p class="intro-description">
+            Watch and hear classic sorting algorithms rearrange data in real time.
+            Generate a random array, choose an algorithm and control the animation
+            speed while each value is translated into a corresponding musical pitch.
+        </p>
+
+    </section>
+
+
+    <!-- ==================================================
+         WORKSPACE
+         ================================================== -->
+
+    <section class="workspace">
+
+
+        <!-- ==================================================
+             PARAMETERS
+             ================================================== -->
+
+        <aside class="control-panel">
+
+            <div class="panel-heading">
+                <span class="panel-number">01</span>
+                <h2>Parameters</h2>
+            </div>
+
+
+            <!-- ALGORITHM -->
+
+            <div class="control-group">
+
+                <label for="algorithmSelect">
+                    Algorithm
+                </label>
+
+                <select id="algorithmSelect">
+
+                    <option value="bubble">
+                        Bubble Sort
+                    </option>
+
+                    <option value="selection">
+                        Selection Sort
+                    </option>
+
+                    <option value="insertion">
+                        Insertion Sort
+                    </option>
+
+                    <option value="merge">
+                        Merge Sort
+                    </option>
+
+                    <option value="quick">
+                        Quick Sort
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- ARRAY SIZE -->
+
+            <div class="control-group">
+
+                <label for="arraySize">
+                    Array Size
+                    <span id="arraySizeValue">80</span>
+                </label>
+
+                <input
+                    id="arraySize"
+                    type="range"
+                    min="10"
+                    max="200"
+                    step="1"
+                    value="80"
+                >
+
+            </div>
+
+
+            <!-- SORT SPEED -->
+
+            <div class="control-group">
+
+                <label for="sortSpeed">
+                    Speed
+                    <span id="sortSpeedValue">50</span>
+                </label>
+
+                <input
+                    id="sortSpeed"
+                    type="range"
+                    min="1"
+                    max="100"
+                    step="1"
+                    value="50"
+                >
+
+            </div>
+
+
+            <!-- VOLUME -->
+
+            <div class="control-group">
+
+                <label for="volumeSlider">
+                    Volume
+                    <span id="volumeValue">35%</span>
+                </label>
+
+                <input
+                    id="volumeSlider"
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value="35"
+                >
+
+            </div>
+
+
+            <!-- MUTE -->
+
+            <button
+                id="muteButton"
+                class="button secondary full-width audio-button"
+                type="button"
+                aria-pressed="false"
+            >
+                Sound: On
+            </button>
+
+
+            <!-- GENERATE -->
+
+            <button
+                id="generateButton"
+                class="button primary full-width generate-button"
+                type="button"
+            >
+                Generate New Array
+            </button>
+
+        </aside>
+
+
+        <!-- ==================================================
+             VISUALISER
+             ================================================== -->
+
+        <section class="visualiser-panel">
+
+            <div class="visualiser-header">
+
+                <div>
+
+                    <p class="panel-label">
+                        VISUALISATION
+                    </p>
+
+                    <h2 id="visualisationTitle">
+                        Bubble Sort
+                    </h2>
+
+                </div>
+
+
+                <div class="simulation-stats">
+
+                    <div>
+                        <span>ELEMENTS</span>
+                        <strong id="elementCount">80</strong>
+                    </div>
+
+                    <div>
+                        <span>COMPARISONS</span>
+                        <strong id="comparisonCount">0</strong>
+                    </div>
+
+                    <div>
+                        <span>SWAPS</span>
+                        <strong id="swapCount">0</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SORTING AREA -->
+
+            <div class="sorting-container">
+
+                <div
+                    id="sortingBars"
+                    class="sorting-bars"
+                ></div>
+
+                <div
+                    class="canvas-message"
+                    id="sortingMessage"
+                >
+                    Generate an array to begin.
+                </div>
+
+            </div>
+
+
+            <!-- SORT CONTROLS -->
+
+            <div class="simulation-controls">
+
+                <button
+                    id="startButton"
+                    class="button primary"
+                    type="button"
+                >
+                    Sort
+                </button>
+
+                <button
+                    id="pauseButton"
+                    class="button secondary"
+                    type="button"
+                >
+                    Pause
+                </button>
+
+                <button
+                    id="stepButton"
+                    class="button secondary"
+                    type="button"
+                >
+                    Step
+                </button>
+
+                <button
+                    id="resetButton"
+                    class="button secondary"
+                    type="button"
+                >
+                    Reset
+                </button>
+
+                <button
+                    id="shuffleButton"
+                    class="button secondary push-right"
+                    type="button"
+                >
+                    Shuffle
+                </button>
+
+            </div>
+
+        </section>
+
+    </section>
+
+
+    <!-- ==================================================
+         ALGORITHMS
+         ================================================== -->
+
+    <section class="tools-section">
+
+        <div class="section-heading">
+
+            <span class="panel-number">
+                02
+            </span>
+
+            <div>
+
+                <h2>
+                    Sorting Algorithms
+                </h2>
+
+                <p>
+                    Switch between several classic algorithms and compare
+                    the way each one approaches the same unsorted data.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="preset-buttons">
+
+
+            <!-- BUBBLE SORT -->
+
+            <button
+                class="preset-button active"
+                data-algorithm="bubble"
+                type="button"
+            >
+
+                <span class="preset-symbol">
+                    B
+                </span>
+
+                <span>
+
+                    <strong>
+                        Bubble Sort
+                    </strong>
+
+                    <small>
+                        Repeated adjacent comparisons
+                    </small>
+
+                </span>
+
+            </button>
+
+
+            <!-- SELECTION SORT -->
+
+            <button
+                class="preset-button"
+                data-algorithm="selection"
+                type="button"
+            >
+
+                <span class="preset-symbol">
+                    S
+                </span>
+
+                <span>
+
+                    <strong>
+                        Selection Sort
+                    </strong>
+
+                    <small>
+                        Repeated minimum selection
+                    </small>
+
+                </span>
+
+            </button>
+
+
+            <!-- INSERTION SORT -->
+
+            <button
+                class="preset-button"
+                data-algorithm="insertion"
+                type="button"
+            >
+
+                <span class="preset-symbol">
+                    I
+                </span>
+
+                <span>
+
+                    <strong>
+                        Insertion Sort
+                    </strong>
+
+                    <small>
+                        Build a sorted region
+                    </small>
+
+                </span>
+
+            </button>
+
+
+            <!-- MERGE SORT -->
+
+            <button
+                class="preset-button"
+                data-algorithm="merge"
+                type="button"
+            >
+
+                <span class="preset-symbol">
+                    M
+                </span>
+
+                <span>
+
+                    <strong>
+                        Merge Sort
+                    </strong>
+
+                    <small>
+                        Divide, sort and merge
+                    </small>
+
+                </span>
+
+            </button>
+
+
+            <!-- QUICK SORT -->
+
+            <button
+                class="preset-button"
+                data-algorithm="quick"
+                type="button"
+            >
+
+                <span class="preset-symbol">
+                    Q
+                </span>
+
+                <span>
+
+                    <strong>
+                        Quick Sort
+                    </strong>
+
+                    <small>
+                        Partition around a pivot
+                    </small>
+
+                </span>
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         LEGEND
+         ================================================== -->
+
+    <section class="legend-section">
+
+        <div class="section-heading">
+
+            <span class="panel-number">
+                03
+            </span>
+
+            <div>
+
+                <h2>
+                    Visual States
+                </h2>
+
+                <p>
+                    Bar colours show what the selected algorithm is doing
+                    during each stage of the sorting process.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="legend-grid">
+
+            <div class="legend-item">
+
+                <span class="legend-cell unsorted"></span>
+
+                <div>
+
+                    <strong>
+                        Unsorted
+                    </strong>
+
+                    <p>
+                        An element waiting to be processed.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="legend-item">
+
+                <span class="legend-cell comparing"></span>
+
+                <div>
+
+                    <strong>
+                        Comparing
+                    </strong>
+
+                    <p>
+                        Elements currently being compared.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="legend-item">
+
+                <span class="legend-cell sorted"></span>
+
+                <div>
+
+                    <strong>
+                        Sorted
+                    </strong>
+
+                    <p>
+                        An element in its final sorted position.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         INFORMATION
+         ================================================== -->
+
+    <section class="information-section">
+
+        <span class="panel-number">
+            04
+        </span>
+
+        <div>
+
+            <h2>
+                Watching and Hearing Algorithms Work
+            </h2>
+
+            <p>
+                Sorting algorithms arrange a collection of values into a
+                defined order. Although every algorithm displayed here
+                ultimately produces the same ascending sequence, the route
+                taken to reach that result can be very different.
+            </p>
+
+            <p>
+                The visualisation maps array values to both bar height and
+                sound. Lower values produce lower-frequency tones while
+                larger values produce higher-frequency tones, allowing the
+                progress of the algorithm to be heard as well as seen.
+            </p>
+
+            <p>
+                Simple algorithms such as Bubble Sort, Selection Sort and
+                Insertion Sort make their decisions directly within the
+                array. More advanced approaches such as Merge Sort and
+                Quick Sort divide the problem into smaller sections.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ==================================================
+     FOOTER
+     ================================================== -->
+
+<footer>
+
+    <div>
+
+        <strong>
+            Midlife Programmer
+        </strong>
+
+        <p>
+            Software experiments, algorithms and unnecessarily
+            large numbers of pixels.
+        </p>
+
+    </div>
+
+    <p>
+        Built with HTML, CSS, JavaScript and curiosity.
+    </p>
+
+</footer>
+
+
+<!-- ==================================================
+     JAVASCRIPT
+     ================================================== -->
+
+<script src="js/SortAudio.js"></script>
+
+<script src="js/SortRenderer.js"></script>
+
+<script src="js/BubbleSort.js"></script>
+<script src="js/SelectionSort.js"></script>
+<script src="js/InsertionSort.js"></script>
+<script src="js/MergeSort.js"></script>
+<script src="js/QuickSort.js"></script>
+
+<script src="js/app.js"></script>
+
+</body>
+
+</html>
