@@ -47,6 +47,7 @@ class SortRenderer {
 
 
         this.array = [];
+        this.runId = 0;
 
         this.bars = [];
 
@@ -230,131 +231,33 @@ class SortRenderer {
      * =====================================================
      */
     async start() {
-
-        /*
-         * Prevent multiple animation loops.
-         */
-        if (this.running && !this.paused) {
-            return;
-        }
-
-
-        /*
-         * Resume an existing animation.
-         */
-        if (this.running && this.paused) {
-
-            this.paused = false;
-
-            return;
-        }
-
-
-        if (
-                this.operationIndex
-                >=
-                this.operations.length
-                ) {
-
-            return;
-        }
-
-
+        if (this.running && !this.paused) return;
+        if (this.running && this.paused) { this.paused = false; return; }
+        if (this.operationIndex >= this.operations.length) return;
+        const runId = ++this.runId;
         this.running = true;
-
         this.paused = false;
-
         this.cancelled = false;
-
-
-        while (
-                this.operationIndex
-                <
-                this.operations.length
-                ) {
-
-            /*
-             * Stop immediately when reset/new-array has
-             * cancelled the current run.
-             */
-            if (this.cancelled) {
-
-                this.running = false;
-
-                return;
-            }
-
-
-            /*
-             * Wait while paused.
-             */
+        while (this.operationIndex < this.operations.length) {
+            if (runId !== this.runId || this.cancelled) return;
             while (this.paused) {
-
-                if (this.cancelled) {
-
-                    this.running = false;
-
-                    return;
-                }
-
-
                 await this.sleep(30);
+                if (runId !== this.runId || this.cancelled) return;
             }
-
-
-            const operation =
-                    this.operations[
-                            this.operationIndex
-                    ];
-
-
-            this.executeOperation(
-                    operation
-                    );
-
-
+            // A manual step may have completed the animation while paused.
+            if (this.operationIndex >= this.operations.length) return;
+            const operation = this.operations[this.operationIndex];
+            this.executeOperation(operation);
             this.operationIndex++;
-
-
-            if (
-                    typeof this.onOperation
-                    ===
-                    "function"
-                    ) {
-
-                this.onOperation(
-                        operation,
-                        this.operationIndex
-                        );
-            }
-
-
-            await this.sleep(
-                    this.getDelay()
-                    );
+            if (typeof this.onOperation === "function") this.onOperation(operation, this.operationIndex);
+            await this.sleep(this.getDelay());
         }
-
-
+        if (runId !== this.runId || this.cancelled) return;
         this.running = false;
-
         this.paused = false;
-
-
-        if (
-                typeof this.onComplete
-                ===
-                "function"
-                ) {
-
-            this.onComplete();
-        }
+        if (typeof this.onComplete === "function") this.onComplete();
     }
 
-    /**
-     * =====================================================
-     * PAUSE
-     * =====================================================
-     */
     pause() {
 
         if (!this.running) {
@@ -456,6 +359,7 @@ class SortRenderer {
      * =====================================================
      */
     stop() {
+        this.runId++;
 
         this.cancelled = true;
 

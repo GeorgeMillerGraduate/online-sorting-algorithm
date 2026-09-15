@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Watch and hear five classic sorting algorithms. Compare their operations with animated bars, sound and step-by-step controls.">
+  <title>Sorting Studio | jenga-code</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="top">
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../" class="site-logo">
+      <span class="logo-fallback" aria-hidden="true">jenga<span>-code</span></span><img class="logo-image" src="../../images/logo.png"
+           alt="jenga-code home" width="200" height="50" onload="this.previousElementSibling.hidden=true" onerror="this.hidden=true">
+    </a>
+
+    <nav id="main-navigation" class="main-nav" aria-label="Main navigation">
+      <a href="../../">Home</a>
+      <a href="../../projects/" class="active" aria-current="location">Projects</a>
+      <a href="../../subjects/">Subjects</a>
+      <a href="../../tutorials/">Tutorials</a>
+      <a href="../../blog/">Blog</a>
+      <a href="../../about/">About</a>
+      <a href="../../contact/">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="https://github.com/GeorgeMillerGraduate" class="social-link"
+         aria-label="GitHub">GH</a>
+      <a href="../../blog/feed/" class="social-link" aria-label="RSS feed">RSS</a>
+      <a href="../../blog/" class="subscribe-button">Read the blog</a>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="page-heading"><div><p class="eyebrow"><a href="../../projects/">THE PLAYGROUND</a><span>/</span> ALGORITHMS</p><h1>Sorting studio<span>.</span></h1></div><p>A little order from the unexpected.</p></div>
+  <section class="studio" id="visualizer" aria-label="Sorting visualiser">
+    <aside class="controls" aria-label="Sorting controls">
+      <div class="control-heading"><p class="eyebrow">WATCH &amp; LISTEN</p><h2>Make sense of it.</h2></div>
+      <label for="algorithmSelect">Sorting algorithm</label>
+      <select id="algorithmSelect"><option value="bubble">Bubble Sort</option><option value="selection">Selection Sort</option><option value="insertion">Insertion Sort</option><option value="merge">Merge Sort</option><option value="quick">Quick Sort</option></select>
+      <div class="control-row"><label for="arraySize">Array size</label><strong id="arraySizeValue">80</strong></div>
+      <input id="arraySize" type="range" min="10" max="200" step="1" value="80">
+      <div class="range-labels"><span>10 elements</span><span>200 elements</span></div>
+      <div class="control-row"><label for="sortSpeed">Animation speed</label><strong id="sortSpeedValue">50</strong></div>
+      <input id="sortSpeed" type="range" min="1" max="100" step="1" value="50">
+      <div class="range-labels"><span>Slow</span><span>Fast</span></div>
+      <button id="startButton" class="primary" type="button">Sort</button>
+      <div class="button-row"><button id="pauseButton" type="button">Pause</button><button id="stepButton" type="button">Step</button><button id="resetButton" type="button">Reset</button><button id="shuffleButton" type="button">Shuffle</button></div>
+      <button id="generateButton" class="wide" type="button">Generate new array</button>
+      <details class="audio-settings" open><summary>Sound settings</summary>
+        <div class="control-row"><label for="volumeSlider">Volume</label><strong id="volumeValue">35%</strong></div>
+        <input id="volumeSlider" type="range" min="0" max="100" step="1" value="35">
+        <button id="muteButton" class="wide" type="button" aria-pressed="false">Sound: On</button>
+      </details>
+      <details class="about" id="algorithms"><summary>About the algorithms</summary>
+        <p>Bubble compares neighbours. Selection finds the next minimum. Insertion builds a sorted prefix. Merge combines sorted sections. Quick partitions around a pivot.</p>
+        <p>Reset restores the original array. Switching algorithms uses that same starting data. Shuffle rearranges those values; Generate creates new values.</p>
+        <p>Lower values produce lower notes. The changes counter includes swaps and value-changing writes.</p>
+      </details>
+      <div class="ad-slot" aria-label="Reserved advertisement">ADVERTISEMENT</div>
+    </aside>
+    <section class="visualiser" aria-label="Sorting animation">
+      <div class="canvas-heading"><strong id="visualisationTitle">Bubble Sort</strong><span>ASCENDING ORDER</span></div>
+      <div class="sorting-container">
+        <div id="sortingBars" class="sorting-bars" role="img" aria-label="Array values shown as vertical bars; highlights indicate the current sorting operation"></div>
+        <div class="canvas-message" id="sortingMessage" role="status">Generating array…</div>
+      </div>
+      <div class="readout"><div><span>ELEMENTS</span><strong id="elementCount">80</strong></div><div><span>COMPARISONS</span><strong id="comparisonCount">0</strong></div><div><span>SWAPS / WRITES</span><strong id="swapCount">0</strong></div></div>
+      <div class="legend" aria-label="Bar colour legend"><span><i class="unsorted"></i>Unsorted</span><span><i class="comparing"></i>Comparing</span><span><i class="swapping"></i>Swap / write</span><span><i class="pivot"></i>Pivot / minimum</span><span><i class="merged"></i>Merged</span><span><i class="sorted"></i>Sorted</span></div>
+    </section>
+  </section>
+  <footer><a class="brand" href="../../">jenga<span>-code</span></a><span>Built with curiosity.</span><nav aria-label="Footer navigation"><a href="../../projects/">Projects</a><a href="../../blog/">Blog</a><a href="../../contact/">Contact</a></nav></footer>
+</main>
+<script src="js/SortAudio.js"></script>
+<script src="js/SortRenderer.js"></script>
+<script src="js/BubbleSort.js"></script>
+<script src="js/SelectionSort.js"></script>
+<script src="js/InsertionSort.js"></script>
+<script src="js/MergeSort.js"></script>
+<script src="js/QuickSort.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
